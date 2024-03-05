@@ -12,6 +12,16 @@
 	transform: translate(0);
 }
 
+.overlay {
+	position: fixed;
+	inset: 0;
+	visibility: hidden;
+}
+
+.overlay_open {
+	visibility: visible;
+}
+
 .form {
 	display: flex;
 	flex-shrink: 0;

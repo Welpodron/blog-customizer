@@ -14,25 +14,23 @@ import {
 	fontColors,
 	fontFamilyOptions,
 	fontSizeOptions,
+	defaultArticleState,
 } from 'src/constants/articleProps';
 import { RadioGroup } from '../radio-group';
 import { Separator } from '../separator';
 import { useState, FormEvent } from 'react';
 
-export type ArticleParamsFormCallbackAction = (value: ArticleStateType) => void;
-
 export type ArticleParamsFormProps = {
-	defaultAppState: ArticleStateType;
-	onSubmit: ArticleParamsFormCallbackAction;
-	onReset: ArticleParamsFormCallbackAction;
+	setAppState: (value: ArticleStateType) => void;
 };
 
 export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
-	const { defaultAppState, onSubmit, onReset } = props;
+	const { setAppState } = props;
 
 	const [isOpened, setIsOpened] = useState<boolean>(false);
 
-	const [formState, setFormState] = useState<ArticleStateType>(defaultAppState);
+	const [formState, setFormState] =
+		useState<ArticleStateType>(defaultArticleState);
 
 	const handleChange = (fieldName: string) => {
 		return (value: OptionType) => {
@@ -46,15 +44,15 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		onSubmit(formState);
+		setAppState(formState);
 	};
 
 	const handleReset = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		setFormState(defaultAppState);
+		setFormState(defaultArticleState);
 
-		onReset(defaultAppState);
+		setAppState(defaultArticleState);
 	};
 
 	return (
@@ -63,6 +61,9 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 				isActive={isOpened}
 				onClick={() => setIsOpened((currentIsOpened) => !currentIsOpened)}
 			/>
+			<div
+				onClick={() => setIsOpened(false)}
+				className={clsx(styles.overlay, isOpened && styles.overlay_open)}></div>
 			<aside
 				className={clsx(styles.container, isOpened && styles.container_open)}>
 				<form
